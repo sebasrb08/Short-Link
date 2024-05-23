@@ -7,6 +7,8 @@ import com.acortador.url.DTO.LinkDto;
 import com.acortador.url.Entity.LinkEntity;
 import com.acortador.url.Service.LinkService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +26,21 @@ public class LinkController {
 
 
     @PostMapping("/short")
-    public ResponseEntity<String> UrlShort(@RequestBody LinkDto linkDto) {
-        return ResponseEntity.ok(linkService.shortLink(linkDto));
+    public ResponseEntity<String> UrlShort( HttpServletRequest request,@RequestBody LinkDto linkDto) {
+        String scheme = request.getScheme();             // http o https
+        String serverName = request.getServerName();     // domain.com
+        int serverPort = request.getServerPort();        // 80, 443, etc.
+
+                // Construir la URL completa
+        StringBuilder url = new StringBuilder();
+        url.append(scheme).append("://").append(serverName);
+
+        // Agregar el puerto si no es el puerto por defecto
+        if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
+            url.append(":").append(serverPort);
+        }
+
+        return ResponseEntity.ok(url+"/"+linkService.shortLink(linkDto));
     }
 
     @GetMapping("/{id}")

@@ -11,6 +11,7 @@ import com.acortador.url.Entity.LinkEntity;
 import com.acortador.url.Repository.LinkRepository;
 import com.acortador.url.Service.LinkService;
 
+
 @Service
 public class LinkServiceImpl implements LinkService{
 
@@ -35,13 +36,12 @@ public class LinkServiceImpl implements LinkService{
         
         LinkEntity linkEntity2 = linkRepository.save(linkEntity);
         
-        return linkEntity2.getUrlShort();
+        return  linkEntity2.getUrlShort();
     }
 
     @Override
     public LinkEntity getLink(String id) {
-        String urlShort = "http://localhost:8080/"+id;
-        Optional<LinkEntity> link = linkRepository.findByUrlShort(urlShort);
+        Optional<LinkEntity> link = linkRepository.findByUrlShort(id);
         if (!link.isPresent()) {
             return null;
         }
@@ -62,8 +62,7 @@ public class LinkServiceImpl implements LinkService{
         String urlShort;
         do{
             UUID id = UUID.randomUUID();
-            String charactersRandom = convertCharacter(id.toString());
-            urlShort="http://localhost:8080/"+charactersRandom;
+            urlShort = convertCharacter(id.toString());
             linkEntity = linkRepository.findByUrlShort(urlShort);
         }
         while (linkEntity.isPresent());
