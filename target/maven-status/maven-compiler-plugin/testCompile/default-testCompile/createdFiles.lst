@@ -1,0 +1,5 @@
+com\acortador\url\Service\LinkServiceTest.class
+com\acortador\url\Dto\LinkDtoTest.class
+com\acortador\url\UrlApplicationTests.class
+com\acortador\url\controller\LinkControllerTest.class
+com\acortador\url\Entity\UrlEntityTest.class
